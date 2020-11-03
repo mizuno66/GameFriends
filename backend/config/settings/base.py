@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'graphene_django',
+    'games',
 ]
 
 MIDDLEWARE = [
@@ -100,3 +102,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'statics')
 STATIC_URL = '/static/'
+
+GRAPHENE = {
+    'SCHEMA': 'config.schema.schema',
+}

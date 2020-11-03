@@ -1,0 +1,24 @@
+version: 2.1
+
+orbs:
+    python: circleci/python@1.0.0
+
+jobs:
+  build:
+    context: SECRET_KEY
+    docker:
+        - image: circleci/python:3.9.0
+        - image: circleci/postgres
+    steps:
+        - checkout
+        - python/install-packages
+        - run:
+            name: Run django tests
+            command: |
+                pipenv run python manage.py test
+        - store_test_results:
+            path: test-results
+        - store_artifacts:
+            path: test-results
+            destination: tr1
+

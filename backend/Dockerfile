@@ -11,7 +11,9 @@ RUN apt-get -y update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-COPY requirements.txt .
-RUN pip3 install -r requirements.txt
+COPY requirements.txt ./
+
+RUN pip install pip-tools==5.3.1 \
+    && pip-sync
 
 EXPOSE 8000

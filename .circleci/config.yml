@@ -34,7 +34,9 @@ commands:
     steps:
       - restore_cache:
           name: Restore Python package
-          keys: deps-{{ .Branch }}-{{ checksum "backend/requirements.txt" }}
+          keys: 
+            - deps-{{ .Branch }}-{{ checksum "backend/requirements.txt" }}
+            - deps-
   pip_install:
     description: "pip install を実行"
     steps:

@@ -25,7 +25,7 @@ commands:
     steps:
       - save_cache:
           name: Save python package
-          key: deps-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          key: deps-{{ .Branch }}-{{ checksum "backend/requirements.txt" }}
           paths:
             - /usr/local/bin
             - /usr/local/lib/python3.9/site-packages
@@ -34,13 +34,13 @@ commands:
     steps:
       - restore_cache:
           name: Restore Python package
-          keys: deps-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          keys: deps-{{ .Branch }}-{{ checksum "backend/requirements.txt" }}
   pip_install:
     description: "pip install を実行"
     steps:
       - run:
           name: pip install
-          command: pip3 install -r requirements.txt
+          command: pip3 install -r backend/requirements.txt
 
 jobs:
   build:
@@ -52,7 +52,7 @@ jobs:
     - restore_python_package
     - pip_install
     - save_python_package
-    - run: python manage.py test
+    - run: python backend/manage.py test
     - store_test_results:
         path: test-results
     - store_artifacts:

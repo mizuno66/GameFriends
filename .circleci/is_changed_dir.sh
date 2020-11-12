@@ -1,4 +1,5 @@
 #!/bin/bash
+# git update-index --chmod=+x is_changed_dir.sh を実行
 # Reference: https://blog.hatappi.me/entry/2018/10/08/232625
 
 if [ "${CIRCLE_BRANCH}" = "main" ]; then

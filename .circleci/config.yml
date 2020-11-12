@@ -2,8 +2,8 @@ version: 2.1
 
 setup_command: &setup_command
   command: |
-    chmod +x ~/.circleci/is_changed_dir.sh
-    echo 'export PATH=$PATH:~/.circleci' >> $BASH_ENV
+    chmod +x ${CIRCLE_WORKING_DIRECTORY}/.circleci/is_changed_dir.sh
+    echo 'export PATH=$PATH:${CIRCLE_WORKING_DIRECTORY}/.circleci' >> $BASH_ENV
 
 executors:
   backend-executor:
@@ -58,7 +58,7 @@ commands:
           name: Save node_modules
           key: deps-{{ .Branch }}-{{ checksum "yarn.lock "}}
           paths:
-            - frontend/node_modules
+            - node_modules
   restore_node_modules:
     description: "node_modules を読み込む"
     steps:

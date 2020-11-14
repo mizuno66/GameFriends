@@ -2,8 +2,8 @@ version: 2.1
 
 setup_command: &setup_command
   command: |
-    chmod +x ${CIRCLE_WORKING_DIRECTORY}/frontend/.circleci/is_changed_dir.sh
-    echo 'export PATH=$PATH:${CIRCLE_WORKING_DIRECTORY}/frontend/.circleci' >> $BASH_ENV
+    chmod +x ${CIRCLE_WORKING_DIRECTORY}frontend/.circleci/is_changed_dir.sh
+    echo 'export PATH=$PATH:${CIRCLE_WORKING_DIRECTORY}frontend/.circleci' >> $BASH_ENV
 
 executors:
   backend-executor:

@@ -83,6 +83,7 @@ jobs:
     executor: backend-executor
     steps:
     - checkout
+        path: ~/
     - run:
         <<: *setup_command
     - run:
@@ -106,6 +107,7 @@ jobs:
     executor: frontend-executor
     steps:
     - checkout
+        path: ~/
     - run:
         <<: *setup_command
     - run:

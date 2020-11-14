@@ -1,10 +1,9 @@
 version: 2.1
 
-setup_command: &setup_command
-  command: |
-    chmod +x ~/.circleci
-    echo 'export PATH=$PATH:~/.circleci' >> $BASH_ENV
-
+#setup_command: &setup_command
+#  command: |
+#    echo 'export PATH=$PATH:${CIRCLE_WORKING_DIRECTORY}.circleci' >> $BASH_ENV
+  
 executors:
   backend-executor:
     docker:
@@ -79,43 +78,41 @@ commands:
 
 jobs:
   backend_build:
-    # working_directory: ~/backend/
+    working_directory: ~/backend
     executor: backend-executor
     steps:
     - checkout
-        # path: ~/
-    - run:
-        <<: *setup_command
-    - run:
-        name: backend diff
-        command: |
-          if ! is_changed_dir.sh "~/backend/"; then
-            circleci step halt
-          fi
+#    - run:
+#        <<: *setup_command
+#    - run:
+#        name: backend diff
+#        command: |
+#          if ! is_changed_dir "~/backend/"; then
+#            circleci step halt
+#          fi
     - run: sudo chown -R circleci:circleci /usr/local/bin
     - run: sudo chown -R circleci:circleci /usr/local/lib/python3.9/site-packages
     - restore_python_package
     - pip_install
     - save_python_package
-    - run: python backend/manage.py test
+    - run: python manage.py test
     - store_test_results:
         path: test-results
     - store_artifacts:
         path: test-reports
   frontend_build:
-    # working_directory: ~/frontend/
+    working_directory: ~/frontend
     executor: frontend-executor
     steps:
     - checkout
-        # path: ~/
-    - run:
-        <<: *setup_command
-    - run:
-        name: frontend diff
-        command: |
-          if ! is_changed_dir.sh "~/frontend/"; then
-            circleci step halt
-          fi
+#    - run:
+#        <<: *setup_command
+#    - run:
+#        name: frontend diff
+#        command: |
+#          if ! is_changed_dir "~/frontend/"; then
+#            circleci step halt
+#          fi
     - restore_node_modules
     - yarn_install
     - save_node_modules

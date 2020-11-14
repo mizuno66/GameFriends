@@ -82,7 +82,7 @@ jobs:
     working_directory: ~/backend/
     executor: backend-executor
     steps:
-    - checkout
+    - checkout:
         path: ~/
     - run:
         <<: *setup_command
@@ -106,7 +106,7 @@ jobs:
     working_directory: ~/frontend/
     executor: frontend-executor
     steps:
-    - checkout
+    - checkout:
         path: ~/
     - run:
         <<: *setup_command

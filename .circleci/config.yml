@@ -86,8 +86,6 @@ jobs:
     - run:
         <<: *setup_command
     - run:
-        command: 
-    - run:
         name: backend diff
         command: |
           if ! is_changed_dir.sh "~/backend/"; then

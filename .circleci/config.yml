@@ -84,7 +84,7 @@ jobs:
     - run:
         name: backend diff
         command: |
-          if ! is_changed_dir "backend/"; then
+          if ! is_changed_dir.sh "backend/"; then
             circleci step halt
           fi
     - run: sudo chown -R circleci:circleci /usr/local/bin
@@ -108,7 +108,7 @@ jobs:
     - run:
         name: frontend diff
         command: |
-          if ! is_changed_dir "frontend/"; then
+          if ! is_changed_dir.sh "frontend/"; then
             circleci step halt
           fi
     - run: sudo chown -R circleci:circleci /usr/local/lib/node_modules

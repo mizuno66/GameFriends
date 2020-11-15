@@ -71,10 +71,6 @@ commands:
     steps:
       - run:
           working_directory: frontend
-          name: yarn install
-          command: npm install -g yarn
-      - run:
-          working_directory: frontend
           name: node_modules install
           command: yarn
 

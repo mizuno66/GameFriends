@@ -78,10 +78,12 @@ commands:
 
 jobs:
   backend_build:
-    working_directory: ~/backend
+    working_directory: ~/src/backend
     executor: backend-executor
     steps:
-    - checkout
+    - run: mkdir -p ~/src
+    - checkout:
+        path: ~/src
 #    - run:
 #        <<: *setup_command
 #    - run:
@@ -101,10 +103,12 @@ jobs:
     - store_artifacts:
         path: test-reports
   frontend_build:
-    working_directory: ~/frontend
+    working_directory: ~/src/frontend
     executor: frontend-executor
     steps:
-    - checkout
+    - run: mkdir -p ~/src
+    - checkout:
+        path: ~/src
 #    - run:
 #        <<: *setup_command
 #    - run:

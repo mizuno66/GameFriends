@@ -55,7 +55,7 @@ commands:
     steps:
       - save_cache:
           name: Save node_modules
-          key: deps-{{ .Branch }}-{{ checksum "frontend/yarn.lock "}}
+          key: deps-{{ .Branch }}-{{ checksum "frontend/yarn.lock"}}
           paths:
             - frontend/node_modules
   restore_node_modules:
@@ -64,7 +64,7 @@ commands:
       - restore_cache:
           name: Restore node_modules
           keys:
-            - deps-front-{{ .Branch }}-{{ checksum "frontend/yarn.lock "}}
+            - deps-front-{{ .Branch }}-{{ checksum "frontend/yarn.lock"}}
             - deps-front-
   yarn_install:
     description: "yarn install を実行"
@@ -113,6 +113,7 @@ jobs:
 #          if ! is_changed_dir "~/frontend/"; then
 #            circleci step halt
 #          fi
+    - run: sudo chown -R circleci:circleci /usr/local/lib/node_modules
     - restore_node_modules
     - yarn_install
     - save_node_modules

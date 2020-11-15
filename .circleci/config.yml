@@ -13,7 +13,7 @@ executors:
           PYTHONBUFFERED: 1
           SECRET_KEY: SECRET_KEY
           DATABASE_ENGINE: django.db.backends.postgresql
-          DATABASE_HOST: db
+          DATABASE_HOST: localhost
           DATABASE_PORT: 5432
           POSTGRES_USER: dbuser
           POSTGRES_PASSWORD: dbpassword

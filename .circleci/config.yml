@@ -2,6 +2,7 @@ version: 2.1
 
 setup_command: &setup_command
   command: |
+    sudo chmod +x is_changed_dir.sh
     echo 'export PATH=$PATH:${CIRCLE_WORKING_DIRECTORY}' >> $BASH_ENV
 
 executors:

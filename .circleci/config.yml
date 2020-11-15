@@ -32,7 +32,7 @@ commands:
     steps:
       - save_cache:
           name: Save python package
-          key: deps-{{ .Branch }}-{{ checksum "~/backend/requirements.txt" }}
+          key: deps-{{ .Branch }}-{{ checksum "backend/requirements.txt" }}
           paths:
             - /usr/local/bin
             - /usr/local/lib/python3.9/site-packages
@@ -42,39 +42,39 @@ commands:
       - restore_cache:
           name: Restore Python package
           keys: 
-            - deps-back-{{ .Branch }}-{{ checksum "~/backend/requirements.txt" }}
+            - deps-back-{{ .Branch }}-{{ checksum "backend/requirements.txt" }}
             - deps-back-
   pip_install:
     description: "pip install を実行"
     steps:
       - run:
           name: pip install
-          command: pip3 install -r ~/backend/requirements.txt
+          command: pip3 install -r backend/requirements.txt
   save_node_modules:
     description: "node_modules をキャッシュ"
     steps:
       - save_cache:
           name: Save node_modules
-          key: deps-{{ .Branch }}-{{ checksum "~/frontend/yarn.lock "}}
+          key: deps-{{ .Branch }}-{{ checksum "frontend/yarn.lock "}}
           paths:
-            - ~/frontend/node_modules
+            - frontend/node_modules
   restore_node_modules:
     description: "node_modules を読み込む"
     steps:
       - restore_cache:
           name: Restore node_modules
           keys:
-            - deps-front-{{ .Branch }}-{{ checksum "~/frontend/yarn.lock "}}
+            - deps-front-{{ .Branch }}-{{ checksum "frontend/yarn.lock "}}
             - deps-front-
   yarn_install:
     description: "yarn install を実行"
     steps:
       - run:
-          working_directory: ~/frontend
+          working_directory: frontend
           name: yarn install
           command: npm install -g yarn
       - run:
-          working_directory: ~/frontend
+          working_directory: frontend
           name: node_modules install
           command: yarn
 
@@ -96,7 +96,7 @@ jobs:
     - restore_python_package
     - pip_install
     - save_python_package
-    - run: python ~/backend/manage.py test
+    - run: python backend/manage.py test
     - store_test_results:
         path: test-results
     - store_artifacts:
@@ -117,7 +117,7 @@ jobs:
     - yarn_install
     - save_node_modules
     - run: 
-        working_directory: ~/frontend
+        working_directory: frontend
         command: yarn test
     - store_test_results:
         path: test-results

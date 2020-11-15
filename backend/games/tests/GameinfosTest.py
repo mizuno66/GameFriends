@@ -22,9 +22,9 @@ class GameinfosTestCase(GraphQLTestCase):
 
         content = json.loads(response.content)
 
-        self.assertResponseNoErrors(response)
-
         print(content)
+
+        self.assertResponseNoErrors(response)
 
     def test_relation(self) -> None:
         response = self.query(

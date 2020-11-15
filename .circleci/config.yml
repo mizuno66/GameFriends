@@ -1,5 +1,10 @@
 version: 2.1
 
+setup_command: &setup_command
+  command: |
+    sudo chmod +x is_changed_dir.sh
+    echo 'export PATH=$PATH:${CIRCLE_WORKING_DIRECTORY}' >> $BASH_ENV
+
 executors:
   backend-executor:
     docker:
@@ -8,7 +13,7 @@ executors:
           PYTHONBUFFERED: 1
           SECRET_KEY: SECRET_KEY
           DATABASE_ENGINE: django.db.backends.postgresql
-          DATABASE_HOST: db
+          DATABASE_HOST: localhost
           DATABASE_PORT: 5432
           POSTGRES_USER: dbuser
           POSTGRES_PASSWORD: dbpassword
@@ -18,6 +23,9 @@ executors:
           POSTGRES_USER: dbuser
           POSTGRES_PASSWORD: dbpassword
           POSTGRES_DB: postgreDB
+  frontend-executor:
+    docker:
+      - image: circleci/node:14.14.0
 
 commands:
   save_python_package:
@@ -35,33 +43,92 @@ commands:
       - restore_cache:
           name: Restore Python package
           keys: 
-            - deps-{{ .Branch }}-{{ checksum "backend/requirements.txt" }}
-            - deps-
+            - deps-back-{{ .Branch }}-{{ checksum "backend/requirements.txt" }}
+            - deps-back-
   pip_install:
     description: "pip install を実行"
     steps:
       - run:
           name: pip install
           command: pip3 install -r backend/requirements.txt
+  save_node_modules:
+    description: "node_modules をキャッシュ"
+    steps:
+      - save_cache:
+          name: Save node_modules
+          key: deps-{{ .Branch }}-{{ checksum "frontend/yarn.lock"}}
+          paths:
+            - frontend/node_modules
+  restore_node_modules:
+    description: "node_modules を読み込む"
+    steps:
+      - restore_cache:
+          name: Restore node_modules
+          keys:
+            - deps-front-{{ .Branch }}-{{ checksum "frontend/yarn.lock"}}
+            - deps-front-
+  yarn_install:
+    description: "yarn install を実行"
+    steps:
+      - run:
+          working_directory: frontend
+          name: node_modules install
+          command: yarn
 
 jobs:
-  build:
+  backend_build:
     executor: backend-executor
     steps:
     - checkout
+    - run:
+        <<: *setup_command
+    - run:
+        name: backend diff
+        command: |
+          if ! is_changed_dir.sh "backend/"; then
+            circleci step halt
+          fi
     - run: sudo chown -R circleci:circleci /usr/local/bin
     - run: sudo chown -R circleci:circleci /usr/local/lib/python3.9/site-packages
     - restore_python_package
     - pip_install
     - save_python_package
-    - run: python backend/manage.py test
+    - run: 
+        working_directory: backend
+        command: python manage.py test
     - store_test_results:
         path: test-results
     - store_artifacts:
-        path: test-reports/
+        path: test-reports
+  frontend_build:
+    executor: frontend-executor
+    steps:
+    - checkout
+    - run:
+        <<: *setup_command
+    - run:
+        name: frontend diff
+        command: |
+          if ! is_changed_dir.sh "frontend/"; then
+            circleci step halt
+          fi
+    - run: sudo chown -R circleci:circleci /usr/local/lib/node_modules
+    - restore_node_modules
+    - yarn_install
+    - save_node_modules
+    - run: 
+        working_directory: frontend
+        command: yarn test
+    - store_test_results:
+        path: test-results
+    - store_artifacts:
+        path: test-reports
 
-workflow:
+workflows:
   version: 2.1
   backend-test:
     jobs:
-    - build
+    - backend_build
+  frontend-test:
+    jobs:
+    - frontend_build

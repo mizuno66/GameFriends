@@ -2,7 +2,7 @@ version: 2.1
 
 setup_command: &setup_command
   command: |
-    echo 'export PATH=$PATH:${CIRCLE_WORKING_DIRECTORY}.circleci' >> $BASH_ENV
+    echo 'export PATH=$PATH:${CIRCLE_WORKING_DIRECTORY}' >> $BASH_ENV
 
 executors:
   backend-executor:

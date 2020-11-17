@@ -22,7 +22,7 @@ services:
         container_name: 'frontend'
         command: sleep infinity
     db:
-        image: postgres
+        image: postgres:12.1-alpine
         ports: 
             - "5432:5432"
         hostname: db

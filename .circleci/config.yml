@@ -18,7 +18,7 @@ executors:
           POSTGRES_USER: dbuser
           POSTGRES_PASSWORD: dbpassword
           POSTGRES_DB: postgreDB
-      - image: circleci/postgres:9.6.2-alpine
+      - image: circleci/postgres:12.1-alpine
         environment:
           POSTGRES_USER: dbuser
           POSTGRES_PASSWORD: dbpassword

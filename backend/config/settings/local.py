@@ -5,7 +5,11 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:3000",
+]
 
 DATABASES = {
     'default': {
